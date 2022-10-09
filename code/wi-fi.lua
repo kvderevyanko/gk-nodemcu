@@ -13,9 +13,6 @@ if (conf.wifi.mode == wifi.STATION) or (conf.wifi.mode == wifi.STATIONAP) then
     wifi.sta.config(conf.wifi.station)
 end
 
-print('chip: ', node.chipid())
-print('heap: ', node.heap())
-
 
 
 if (wifi.getmode() == wifi.STATION) or (wifi.getmode() == wifi.STATIONAP) then
