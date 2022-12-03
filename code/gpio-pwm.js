@@ -13,6 +13,6 @@ function sendPwmRequest (str){
     xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) { console.log(xhr.responseText);}
     }
-    xhr.open('GET', '/gpio-pwm.lua?'+str, true);
+    xhr.open('GET', '/gpio-pwm.lc?'+str, true);
     xhr.send(null);
 }

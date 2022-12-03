@@ -1,4 +1,4 @@
-local conf = dofile("config.lua");
+local conf = dofile("config.lc");
 
 srv = net.createServer(net.TCP)
 srv:listen(conf.general.port, function(conn)
@@ -11,11 +11,15 @@ srv:listen(conf.general.port, function(conn)
             print(vars);
         end
 
+      if path then
+            print(path);
+        end
+
         local req;
         if vars then
-            req = dofile("request.lua")(path .. '?' .. vars);
+            req = dofile("request.lc")(path .. '?' .. vars);
         else
-            req = dofile("request.lua")(path);
+            req = dofile("request.lc")(path);
         end
 
         local answer = "";
@@ -26,7 +30,7 @@ srv:listen(conf.general.port, function(conn)
 
         if f and file.exists(f) then
 
-            if string.sub(f, -4) == ".lua" then
+            if string.sub(f, -3) == ".lc" then
                 --answer = '{"status":"ok",  "message":"File "}';
                 local r;
                 if vars then

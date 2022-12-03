@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="ru-RU"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/x-icon" href="favicon.ico">
+<title>Управление WS</title>
+</head>
+<body>
+<div id="wsBlock">
+    <label>Режим</label>
+    <select class="form-control" name="mode" id="modeList" onchange="prepareRequest()">
+    </select><br><br>
+    <label>Количество диодов<br>
+        <input name="buffer" onchange="setVal(this.value, 'bufferBId')" type="range" min="1" max="90" step="1" value="30" class="slider">
+        <span class="badge" id="bufferBId">30</span>
+    </label> <br>
+    <label>Яркость <br>
+        <input name="bright" onchange="setVal(this.value, 'brightBId')"  type="range" min="0" max="255" step="1" value="150" class="slider">
+        <span class="badge" id="brightBId">150</span>
+    </label><br>
+    <label>Задержка<br>
+        <input name="delay" onchange="setVal(this.value, 'delayBId')"  type="range" min="20" max="500" step="5" value="150" class="slider">
+        <span class="badge" id="delayBId">150</span>
+    </label><br>
+    <label>Опции режима<br>
+        <input name="mode_options" onchange="setVal(this.value, 'modeOptionsBId')"  type="range" min="1" max="20" step="1" value="1" class="slider">
+        <span class="badge" id="modeOptionsBId">1</span>
+    </label><br>
+    <label>Одиночный цвет<br>
+    <input name="single_color" type="color" value="#ff0000">
+    </label><br>
+</div>
+<script>
+    let modeList = {
+        'off': 'Выключить',
+        'static': 'Статичный',
+        'static-soft-blink': 'Статичный мягкий мигающий',
+        'static-soft-random-blink': 'Случайный мягкий мигающий',
+        'round-static': 'По кругу статичный',
+        'round-random': 'По кругу случайный',
+        'rainbow': 'Радуга',
+        'rainbow-circle': 'Радуга по кругу',
+    };
+</script>
+<link href="style.css" rel="stylesheet">
+<script async src="ws.js"></script>
+</body></html>

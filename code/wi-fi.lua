@@ -1,4 +1,4 @@
-local conf = dofile("config.lua");
+local conf = dofile("config.lc");
 
 wifi.setmode(conf.wifi.mode)
 
@@ -20,7 +20,7 @@ if (wifi.getmode() == wifi.STATION) or (wifi.getmode() == wifi.STATIONAP) then
     wifi.eventmon.register(wifi.eventmon.STA_GOT_IP, function(args)
         print("Connected to WiFi Access Point. Got IP: " .. args["IP"])
         --start server
-        dofile("server.lua");
+        dofile("server.lc");
         wifi.eventmon.register(wifi.eventmon.STA_DISCONNECTED, function(args)
             print("Lost connectivity! Restarting...")
             node.restart()
@@ -46,7 +46,7 @@ else
     print("ssid: "..conf.wifi.accessPoint.config.ssid)
     print("Password: "..conf.wifi.accessPoint.config.pwd)
     print("IP: "..conf.wifi.accessPoint.net.ip)
-    dofile("server.lua");
+    dofile("server.lc");
 end
 
 conf = nil

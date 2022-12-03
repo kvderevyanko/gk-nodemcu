@@ -1,6 +1,9 @@
 esp2866
 
 esptool.py --port /dev/ttyUSB0 write_flash -fm qio 0x00000 'firmware/blank4.bin'
-esptool.py --port /dev/ttyUSB0 write_flash -fm qio 0x00000 'firmware/nodemcu-release-7-modules-2022-09-16-06-54-45-integer.bin'
+esptool.py --port /dev/ttyUSB0 write_flash -fm qio 0x00000 'firmware/color_utils,dht,file,gpio,mdns,net,node,pixbuf,pwm,sjson,tmr,uart,wifi,ws2812.bin'
 esptool.py --port /dev/ttyUSB0 write_flash -fm qio 0x00000 'firmware/file, gpio, net, node, pwm, tmr, uart, wifi.bin'
+
+esptool.py --port /dev/ttyUSB0 write_flash -fm qio 0x00000 \
+'firmware/adc, bit, color_utils, dht, encoder, file, gpio, http, mdns, net, node, pixbuf, pwm, sjson, tmr, uart, wifi, ws2812, ws2812_effects.bin'
 

@@ -13,6 +13,6 @@ function sendRequest (str){
     xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) { console.log(xhr.responseText);}
     }
-    xhr.open('GET', '/gpio.lua?'+str, true);
+    xhr.open('GET', '/gpio.lc?'+str, true);
     xhr.send(null);
 }
