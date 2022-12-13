@@ -1,7 +1,8 @@
 function cl(str) {console.log(str)}
 
 function setVal(value, divId) {
-    document.getElementById(divId).innerText = value;
+    if(divId)
+        document.getElementById(divId).innerText = value;
     prepareRequest();
 }
 
@@ -37,5 +38,5 @@ function hexToGrb(hex) {//Rgb
     let vw = new DataView(arrBuff);
     vw.setUint32(0,parseInt(hex, 16),false);
     let arrByte = new Uint8Array(arrBuff);
-    return [arrByte[2], arrByte[1], arrByte[3]];
+    return [arrByte[1], arrByte[2], arrByte[3]];
 }

@@ -22,66 +22,86 @@ end
 
 -- Основная функция для работы с ws 2812
 function actionRequest(rd)
-    print(node.heap());
-    local wsEffect = dofile("ws-effect.lc");
+
+    if rd['buffer'] == nil then
+        return
+    end
     wsTimer:stop();
-    print(node.heap());
-    if rd['buffer'] == nil then return end
+    local buffer = tonumber(rd['buffer'])
 
-        local buffer = tonumber(rd['buffer'])
+    if buffer < 1 then buffer = 1 end;
 
-        local delay = 100;
-        local bright = 100;
-        local single_color = {0, 0, 0};
-        local mode_options = 1;
+    local delay = 100;
+    local bright = 100;
+    local single_color = { 0, 0, 0 };
+    local mode_options = 1;
 
-        for name, value in pairs(rd) do
-            if name == "delay" and tonumber(value) then
-                delay = tonumber(value);
-            end
-
-            if name == "bright" and tonumber(value) then
-                bright = tonumber(value);
-            end
-
-            if name == "single_color" and value then
-                value = uri_decode(value);
-                single_color = sjson.decode(value);
-            end
-
-            if name == "mode_options" and value then
-                mode_options = tonumber(value);
-            end
+    for name, value in pairs(rd) do
+        if name == "delay" and tonumber(value) then
+            delay = tonumber(value);
         end
 
-        local mode = tostring(rd['mode']);
+        if name == "bright" and tonumber(value) then
+            bright = tonumber(value);
+        end
 
-        if mode == "off"  then
-            wsEffOff(buffer);
-        elseif mode == "static" then
-            wsEffStatic(buffer, single_color, bright);
-        elseif mode == "static-soft-blink" then
-            wsEffStaticSoftBlink(buffer, single_color, bright, delay, mode_options);
-        elseif mode == "static-soft-random-blink" then
-            wsEffStaticSoftRandomBlink(buffer, single_color, bright, delay, mode_options);
-        elseif mode == "round-random" then
-           wsEffRoundRandom(buffer, single_color, bright, delay, mode_options);
-        elseif mode == "round-static" then
-            wsEffRoundStatic(buffer, single_color, bright, delay, mode_options);
-        elseif mode == "rainbow" then
-            wsEffRainbow(buffer, single_color, bright, delay, mode_options);
-        elseif mode == "rainbow-circle" then
-            wsEffRainbowCircle(buffer, single_color, bright, delay, mode_options);
-        elseif mode == "scanner" then
-            wsScanner(buffer, single_color, bright, delay, mode_options);
-        end;
+        if name == "single_color" and value then
+            value = uri_decode(value);
+            single_color = sjson.decode(value);
+        end
 
-        local json = sjson.encode(rd)
-        file.open("json/ws-action.json", "w");
-        file.write(json)
-        file.flush()
-        file.close()
+        if name == "mode_options" and value then
+            mode_options = tonumber(value);
+        end
+    end
 
+    local mode = tostring(rd['mode']);
+
+    local wsEffect = dofile("ws-effect.lc");
+
+    if delay < 20 then delay = 20 end;
+    if bright < 1 then bright = 1 end;
+
+    if mode == "off" then
+        wsEffOff(buffer);
+    elseif mode == "static" then
+        wsEffStatic(buffer, single_color, bright);
+    elseif mode == "static-soft-blink" then
+        wsEffStaticSoftBlink(buffer, single_color, bright, delay, mode_options);
+    elseif mode == "static-soft-random-blink" then
+        wsEffStaticSoftRandomBlink(buffer, single_color, bright, delay, mode_options);
+    elseif mode == "round-random" then
+        wsEffRoundRandom(buffer, single_color, bright, delay, mode_options);
+    elseif mode == "round-static" then
+        wsEffRoundStatic(buffer, single_color, bright, delay, mode_options);
+    elseif mode == "rainbow" then
+        wsEffRainbow(buffer, single_color, bright, delay, mode_options);
+    elseif mode == "rainbow-circle" then
+        wsEffRainbowCircle(buffer, single_color, bright, delay, mode_options);
+    elseif mode == "scanner" then
+        wsScanner(buffer, single_color, bright, delay, mode_options);
+    end ;
+
+    print(mode);
+
+    --Сохраняем файл под временным именем, удаляем файл с конфигом, переименовывем в нужный
+    local json = sjson.encode(rd)
+    file.open("json/ws-action.json-tmp", "w");
+    file.write(json);
+    file.flush();
+    file.close();
+
+    file.remove("json/ws-action.json");
+    file.flush();
+    file.close();
+    file.rename("json/ws-action.json-tmp", "json/ws-action.json");
+    file.flush();
+    file.close();
+    file.remove("json/ws-action.json-tmp");
+    file.flush();
+    file.close();
+
+    wsEffect = nil;
     mode = nil;
     rd = nil;
     buffer = nil;
@@ -90,14 +110,12 @@ function actionRequest(rd)
     bright = nil;
     single_color = nil;
     mode_options = nil;
-    wsEffect = nil;
 
     collectgarbage()
     return true;
 end
 
-
-return function (args)
+return function(args)
     collectgarbage();
     local message = "";
     local tableVar = {};
@@ -128,7 +146,5 @@ return function (args)
     tableVar = nil;
     args = nil;
     collectgarbage();
-    print("========");
-    print(node.heap());
     return '{"status":"ok",  "message":"11111"}';
 end

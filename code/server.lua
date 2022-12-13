@@ -43,17 +43,17 @@ srv:listen(conf.general.port, function(conn)
 
                 client:send("HTTP/1.0 200 OK\r\nContent-Type: application/json\r\n\r\n" .. answer);
             else
-                client:send("HTTP/1.0 200 OK\r\nContent-Type: text/html \r\n\r\n")
+              --  client:send("HTTP/1.0 200 OK\r\nContent-Type: text/html \r\n\r\n")
                 --Получаем длину файла, считаем количество отрезков по 1000 байт и отдаём честями
                 local stat = file.stat(f);
                 --Считаем количество отрезков по 800 байт
-                local statSize = (stat.size / 800 + 1);
+                local statSize = (stat.size / 1000 + 1);
 
                 local bigFile = "";
 
                 --Задаём ограничения
                 if stat.size < 1000 then statSize = 1; end;
-                if statSize > 3 then statSize = 3; bigFile = "----Big File----"; end;
+                if statSize > 5 then statSize = 5; bigFile = "----Big File----"; end;
 
                 if statSize == 1 then
                     --Если размер файла меньше 1000 байт, возвращаем как есть
@@ -64,8 +64,8 @@ srv:listen(conf.general.port, function(conn)
                     --выплёвываем по 1000 байт
                     for i = 1, statSize, 1 do
                         if file.open(f) then
-                            file.seek("set", ((i - 1) * 800))
-                            local textFile = file.read(800);
+                            file.seek("set", ((i - 1) * 1000))
+                            local textFile = file.read(1000);
                             file.close();
                             client:send(textFile);
                             textFile = nil;

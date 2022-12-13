@@ -7,3 +7,7 @@ esptool.py --port /dev/ttyUSB0 write_flash -fm qio 0x00000 'firmware/file, gpio,
 esptool.py --port /dev/ttyUSB0 write_flash -fm qio 0x00000 \
 'firmware/adc, bit, color_utils, dht, encoder, file, gpio, http, mdns, net, node, pixbuf, pwm, sjson, tmr, uart, wifi, ws2812, ws2812_effects.bin'
 
+---Для глюков
+esptool.py --port /dev/ttyUSB0 write_flash -fm dio 0x00000 'firmware/blank4.bin'
+esptool.py --port /dev/ttyUSB0 write_flash -fs 4MB  -fm dio 0x00000  'firmware/adc, bit, color_utils, dht, encoder, file, gpio, http, mdns, net, node, pixbuf, pwm, sjson, tmr, uart, wifi, ws2812, ws2812_effects.bin'
+
