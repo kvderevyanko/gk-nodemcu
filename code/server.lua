@@ -38,10 +38,17 @@ srv:listen(conf.general.port, function(conn)
                 else
                     answer = dofile(f)(nil);
                 end
-
+                print("answer");
+                print(answer);
                 if answer == "" then answer = '{"status":"ok",  "message":"Not answer"}'; end;
 
                 client:send("HTTP/1.0 200 OK\r\nContent-Type: application/json\r\n\r\n" .. answer);
+            elseif string.sub(f, -5) == ".json" then
+                client:send("HTTP/1.0 200 OK\r\nContent-Type: application/json\r\n\r\n");
+                if file.open(f) then
+                    client:send(file.read());
+                    file.close()
+                end
             else
               --  client:send("HTTP/1.0 200 OK\r\nContent-Type: text/html \r\n\r\n")
                 --Получаем длину файла, считаем количество отрезков по 1000 байт и отдаём честями
@@ -59,6 +66,7 @@ srv:listen(conf.general.port, function(conn)
                     --Если размер файла меньше 1000 байт, возвращаем как есть
                     if file.open(f) then
                         client:send(file.read());
+                        file.close()
                     end
                 else
                     --выплёвываем по 1000 байт

@@ -7,6 +7,78 @@ function wsEffOff(bufferWs)
     collectgarbage();
 end
 
+function blueDiode(blink, blueBright, blueMinBright, blueMaxBright, blueSpeed, blueStep)
+    blueBright = blueBright * 4;
+    blueBright = 1023 - blueBright;
+    if blueBright < 0 then blueBright = 0; end;
+    if blueBright > 1023 then blueBright = 1023; end;
+
+    ws2812.init()
+    local buffer = ws2812.newBuffer(200, 3);
+    buffer:fill(0, 0, 0);
+    ws2812.write(buffer);
+
+    pwm.setup(4, 500, blueBright);
+    pwm.start(4);
+
+    if blink == 1 then
+        if blueMinBright <  blueMaxBright then
+            blueMinBright = 225 - blueMinBright;
+            blueMaxBright = 225 - blueMaxBright;
+
+            if blueMinBright < 0 then blueMinBright = 0 end;
+            if blueMinBright > 225 then blueMinBright = 225 end;
+
+            if blueMaxBright < 0 then blueMaxBright = 0 end;
+            if blueMaxBright > 225 then blueMaxBright = 225 end;
+
+            if blueSpeed < 5 then blueSpeed = 5 end;
+            if blueSpeed > 1000 then blueSpeed = 1000 end;
+
+            if blueStep < 1 then blueStep = 1 end;
+            if blueStep > 20 then blueStep = 20 end;
+
+            local nowDuty = blueMaxBright;
+            local direction = 1;
+
+            print(blueMinBright)
+            print(blueMaxBright)
+            wsTimer:register(blueSpeed, tmr.ALARM_AUTO, function()
+                if direction == 1 then
+                    nowDuty = nowDuty - blueStep;
+                    if nowDuty < 0 then nowDuty = 0; end;
+                    pwm.setduty(4, (nowDuty * 4));
+
+                    if nowDuty < blueMaxBright or nowDuty == blueMaxBright then
+                        direction = 0;
+                    end
+                else
+                    nowDuty = nowDuty + blueStep;
+                    if nowDuty > 226 then nowDuty = 225; end;
+                    pwm.setduty(4, (nowDuty * 4));
+
+                    if nowDuty > blueMinBright or nowDuty == blueMinBright then
+                        direction = 1;
+                    end
+                end;
+            end);
+            wsTimer:start();
+
+        else
+            pwm.setduty(4, blueMaxBright);
+        end
+    end
+
+    buffer = nil;
+    --[[blink = nil;
+    blueBright = nil;
+    blueMinBright = nil;
+    blueMaxBright = nil;
+    blueSpeed = nil;
+    blueStep = nil;]]
+    collectgarbage();
+end
+
 function wsEffStatic(bufferWs, color, bright)
     ws2812.init()
     local buffer = ws2812.newBuffer(bufferWs, 3);

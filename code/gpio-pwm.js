@@ -1,4 +1,4 @@
-const pins = {5:"Красный",6:"Зелёный",7:"Синий",8:"Белый"};
+const pins = {4:"4"};
 let htmlPwm = "";
 
 for (const [key, value] of Object.entries(pins)) {
