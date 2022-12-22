@@ -1,22 +1,65 @@
-return function (args)
-    local message = "";
+--Восстанавливаем настройки PWM после перезагрузки
+function openGpioJson()
+    if file.open("json/gpio-action.json") then
+        local rd = sjson.decode(file.read())
+        actionRequest(rd)
+        file.close()
+        return true
+    else
+        return false
+    end
+end
+
+--Функция для работы с PWM
+function actionRequest(rd)
+    for pin, value in pairs(rd) do
+        pin = tonumber(pin);
+        value = tonumber(value);
+        if pin >= 0 or pin < 12 then --Проверяем, что бы ключи были числа в нужных пределах
+            gpio.mode(pin, gpio.OUTPUT)
+            if value == 1 then
+                gpio.write(pin, gpio.HIGH)
+            else
+                gpio.write(pin, gpio.LOW)
+            end
+        end;
+    end
+
+    local json = sjson.encode(rd)
+    file.open("json/gpio-action.json-tmp", "w");
+    file.write(json);
+    file.flush();
+    file.close();
+
+    file.remove("json/gpio-action.json");
+    file.flush();
+    file.close();
+    file.rename("json/gpio-action.json-tmp", "json/gpio-action.json");
+    file.flush();
+    file.close();
+    file.remove("json/gpio-action.json-tmp");
+    file.flush();
+    file.close();
+
+    json = nil;
+    rd = nil
+    collectgarbage()
+    return '{"status":"ok", "message":"gpio ok"}'
+end
+
+
+return function(args)
+    local tableVar = {};
     if args then
         for kv in args.gmatch(args, "%s*&?([^=]+=[^&]+)") do
-            local pin, value = string.match(kv, "(.*)=(.*)");
-            pin = tonumber(pin);
-            value = tonumber(value);
-            if pin >= 0 or pin < 12 then --Проверяем, что бы ключи были числа в нужных пределах
-                gpio.mode(pin, gpio.OUTPUT)
-                if value == 1 then
-                    gpio.write(pin, gpio.HIGH)
-                    message = message..pin..":on ";
-                else
-                    gpio.write(pin, gpio.LOW)
-                    message = message..pin..":off ";
-                end
-            end;
-            --print("Parsed: " .. key .. " => " .. value)
+            local name, value = string.match(kv, "(.*)=(.*)");
+            tableVar[name] = value;
         end
     end
-    return '{"status":"ok",  "message":"'..message..'"}';
+    actionRequest(tableVar);
+
+    tableVar = nil;
+    args = nil;
+    collectgarbage();
+    return '{"status":"ok",  "message":"11111"}';
 end

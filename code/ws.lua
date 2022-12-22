@@ -148,7 +148,6 @@ function actionRequest(rd)
 end
 
 return function(args)
-    collectgarbage();
     local tableVar = {};
     if args then
         for kv in args.gmatch(args, "%s*&?([^=]+=[^&]+)") do
