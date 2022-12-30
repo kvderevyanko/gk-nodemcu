@@ -8,7 +8,7 @@ let blueListOptions = {
     'blueStep':{'label':'Шаги', 'min' : 1, 'max' : 20, 'step' : 1, 'value' : 2},
 };
 let rangeList = {
-    'buffer':{'label':'Количество диодов','min' : 1, 'max' : 80, 'step' : 1, 'value' : 64},
+    'buffer':{'label':'Количество диодов','min' : 1, 'max' : 80, 'step' : 1, 'value' : 50},
     'bright':{'label':'Яркость', 'min' : 0, 'max' : 225, 'step' : 1, 'value' : 30},
     'delay':{'label':'Задержка', 'min' : 10, 'max' : 225, 'step' : 1, 'value' : 30},
     'mode_options':{'label':'Опции режима', 'min' : 1, 'max' : 15, 'step' : 1, 'value' : 1}

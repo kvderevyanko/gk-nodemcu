@@ -14,17 +14,17 @@ end
 function actionRequest(rd)
     local clock =  tonumber(rd['clock']);
     if clock < 1 or clock > 1000 then clock = 500 end;
-    local pinDuty;
     for pin, value in pairs(rd) do
         --Если значения не те, что ниже
-        if (pin ~= nil and pin ~= 'clock') then
+        if pin ~= nil and pin ~= 'clock' then
             pin = tonumber(pin)
-            pinDuty = pwm.getduty(pin);
             value = tonumber(value)
-            --if pinDuty ~= value then
+            if value < 0 then value = 0 end;
+
+            if  pin ~= nil and pin >= 0 and pin < 10  then
                 pwm.setup(pin, clock, value);
                 pwm.start(pin);
-           -- end
+           end
         end
     end
 
@@ -47,7 +47,6 @@ function actionRequest(rd)
     json = nil;
     rd = nil
     clock = nil
-    pinDuty = nil
     collectgarbage()
     return '{"status":"ok", "message":"pwm ok"}'
 end
