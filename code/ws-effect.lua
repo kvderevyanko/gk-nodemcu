@@ -1,6 +1,6 @@
 function wsEffOff(bufferWs)
     ws2812.init()
-    local buffer = ws2812.newBuffer(bufferWs, 3);
+    local buffer = pixbuf.newBuffer(bufferWs, 3);
     buffer:fill(0, 0, 0);
     ws2812.write(buffer);
     buffer = nil;
@@ -14,7 +14,7 @@ function blueDiode(blink, blueBright, blueMinBright, blueMaxBright, blueSpeed, b
     if blueBright > 1023 then blueBright = 1023; end;
 
     ws2812.init()
-    local buffer = ws2812.newBuffer(2000, 3);
+    local buffer = pixbuf.newBuffer(2000, 3);
     buffer:fill(0, 0, 0);
     ws2812.write(buffer);
 
@@ -75,7 +75,7 @@ end
 
 function wsEffStatic(bufferWs, color, bright)
     ws2812.init()
-    local buffer = ws2812.newBuffer(bufferWs, 3);
+    local buffer = pixbuf.newBuffer(bufferWs, 3);
     buffer:fill(color[2], color[1], color[3]);
     buffer:mix(bright, buffer);
     ws2812.write(buffer);
@@ -96,7 +96,7 @@ function wsEffStaticSoftBlink(bufferWs, color, bright, delay, mode_options)
     if mode_options < 1 then
         mode_options = 1;
     end ;
-    local buffer = ws2812.newBuffer(bufferWs, 3);
+    local buffer = pixbuf.newBuffer(bufferWs, 3);
 
     wsTimer:register(delay, tmr.ALARM_AUTO, function()
         if incr == 0 then
@@ -163,7 +163,7 @@ function wsEffStaticSoftRandomBlink(bufferWs, color, bright, delay, mode_options
     if mode_options < 1 then
         mode_options = 1;
     end ;
-    local buffer = ws2812.newBuffer(bufferWs, 3);
+    local buffer = pixbuf.newBuffer(bufferWs, 3);
     wsTimer:register(delay, tmr.ALARM_AUTO, function()
         if incr == 0 then
             g_make = g_make - mode_options;
@@ -233,7 +233,7 @@ end
 
 function wsEffRoundRandom(bufferWs, color, bright, delay, mode_options)
     ws2812.init();
-    local buffer = ws2812.newBuffer(bufferWs, 3);
+    local buffer = pixbuf.newBuffer(bufferWs, 3);
     buffer:fill(0, 0, 0);
     ws2812.write(buffer);
 
@@ -288,7 +288,7 @@ end
 
 function wsEffRoundStatic(bufferWs, color, bright, delay, mode_options)
     ws2812.init();
-    local buffer = ws2812.newBuffer(bufferWs, 3);
+    local buffer = pixbuf.newBuffer(bufferWs, 3);
     buffer:fill(0, 0, 0);
     ws2812.write(buffer);
 
@@ -320,7 +320,7 @@ end
 
 function wsEffRainbow(bufferWs, color, bright, delay, mode_options)
     ws2812.init();
-    local buffer = ws2812.newBuffer(bufferWs, 3);
+    local buffer = pixbuf.newBuffer(bufferWs, 3);
 
     local g = color[2];
     local r = color[1];
@@ -382,7 +382,7 @@ end
 
 function wsEffRainbowCircle(bufferWs, color, bright, delay, mode_options)
     ws2812.init();
-    local buffer = ws2812.newBuffer(bufferWs, 3);
+    local buffer = pixbuf.newBuffer(bufferWs, 3);
 
     local g = color[2];
     local r = color[1];
