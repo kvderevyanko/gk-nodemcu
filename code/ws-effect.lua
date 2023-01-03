@@ -41,8 +41,6 @@ function blueDiode(blink, blueBright, blueMinBright, blueMaxBright, blueSpeed, b
             local nowDuty = blueMaxBright;
             local direction = 1;
 
-            print(blueMinBright)
-            print(blueMaxBright)
             wsTimer:register(blueSpeed, tmr.ALARM_AUTO, function()
                 if direction == 1 then
                     nowDuty = nowDuty - blueStep;
