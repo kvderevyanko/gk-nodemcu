@@ -14,7 +14,7 @@ function blueDiode(blink, blueBright, blueMinBright, blueMaxBright, blueSpeed, b
     if blueBright > 1023 then blueBright = 1023; end;
 
     ws2812.init()
-    local buffer = ws2812.newBuffer(200, 3);
+    local buffer = ws2812.newBuffer(2000, 3);
     buffer:fill(0, 0, 0);
     ws2812.write(buffer);
 
@@ -70,12 +70,6 @@ function blueDiode(blink, blueBright, blueMinBright, blueMaxBright, blueSpeed, b
     end
 
     buffer = nil;
-    --[[blink = nil;
-    blueBright = nil;
-    blueMinBright = nil;
-    blueMaxBright = nil;
-    blueSpeed = nil;
-    blueStep = nil;]]
     collectgarbage();
 end
 
