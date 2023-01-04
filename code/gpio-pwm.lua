@@ -1,8 +1,11 @@
 --Восстанавливаем настройки PWM после перезагрузки
 function openPwmJson()
     if file.open("json/pwm-action.json") then
-        local rd = sjson.decode(file.read())
-        actionRequest(rd)
+        local str = file.read();
+        if str then
+            local rd = sjson.decode(str)
+            actionRequest(rd)
+        end
         file.close()
         return true
     else

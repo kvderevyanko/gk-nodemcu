@@ -2,8 +2,11 @@
 function openWsJson()
     _G.wsTimer = tmr.create();
     if file.open("json/ws-action.json") then
-        local rd = sjson.decode(file.read())
-        actionRequest(rd)
+        local str = file.read();
+        if str then
+            local rd = sjson.decode(str)
+            actionRequest(rd)
+        end
         file.close()
         return true
     else

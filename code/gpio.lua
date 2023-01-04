@@ -1,8 +1,11 @@
 --Восстанавливаем настройки PWM после перезагрузки
 function openGpioJson()
     if file.open("json/gpio-action.json") then
-        local rd = sjson.decode(file.read())
-        actionRequest(rd)
+        local str = file.read();
+        if str then
+            local rd = sjson.decode(str)
+            actionRequest(rd)
+        end
         file.close()
         return true
     else
